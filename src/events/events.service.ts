@@ -7,7 +7,7 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 export class EventsService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: CreateEventDto, userId: number) {
+  create(data: CreateEventDto) {
     return this.prisma.event.create({
       data: {
         title: data.title,
