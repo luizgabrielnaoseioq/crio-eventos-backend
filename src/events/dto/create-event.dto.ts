@@ -9,36 +9,37 @@ import { Status } from "generated/prisma";
 
 export class CreateEventDto {
   @IsString()
-  title: String;
+  title: string;
 
   @IsString()
-  description: String;
+  description: string;
 
   @IsDateString()
-  start_date: String;
+  start_date: string;
 
   @IsDateString()
-  end_date: String;
+  end_date: string;
 
   @IsString()
-  location: String;
+  location: string;
 
   @IsString()
-  image_url: String;
+  image_url: string;
 
   @IsString()
-  event_url: String;
+  event_url: string;
 
   @IsString()
-  social_links: String;
+  social_links: string;
 
   @IsEnum(Status)
   status: Status;
+
+  @IsDateString()
+  created_at: string;
 
   // Opcional se quiser permitir eventos sem criador por enquanto.
   @IsOptional()
   @IsInt()
   userId?: number;
-
-
 }

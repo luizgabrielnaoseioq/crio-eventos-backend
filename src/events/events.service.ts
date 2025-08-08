@@ -7,23 +7,24 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 export class EventsService {
   constructor(private prisma: PrismaService) {}
 
-  // create(data: CreateEventDto, userId: number) {
-  //   return this.prisma.event.create({
-  //     data: {
-  //       title: data.title,
-  //       description: data.description,
-  //       start_date: new Date(data.start_date),
-  //       end_date: new Date(data.end_date),
-  //       location: data.location,
-  //       image_url: data.image_url,
-  //       event_url: data.event_url,
-  //       social_links: data.social_links,
-  //       status: data.status,
-  //       created_by: { connect: { id: userId } },
-  //     },
-  //     include: { created_by: true },
-  //   });
-  // }
+  create(data: CreateEventDto, userId: number) {
+    return this.prisma.event.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        location: data.location,
+        image_url: data.image_url,
+        event_url: data.event_url,
+        social_links: data.social_links,
+        status: data.status,
+        created_by: { connect: { id: data.userId } },
+        created_at: data.created_at,
+      },
+      include: { created_by: true },
+    });
+  }
 
   findAll() {
     return this.prisma.event.findMany({
@@ -40,13 +41,13 @@ export class EventsService {
     });
   }
 
-  // update(id: number, data: UpdateEventDto) {
-  //   return this.prisma.event.update({
-  //     where: { id },
-  //     data,
-  //     include: { created_by: true },
-  //   });
-  // }
+  update(id: number, data: UpdateEventDto) {
+    return this.prisma.event.update({
+      where: { id },
+      data,
+      include: { created_by: true },
+    });
+  }
 
   remove(id: number) {
     return this.prisma.event.delete({
