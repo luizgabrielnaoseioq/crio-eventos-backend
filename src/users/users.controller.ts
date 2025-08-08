@@ -15,21 +15,21 @@ import { Event, Role, User } from "generated/prisma";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  async createUser(
-    @Body()
-    userData: {
-      email: string;
-      name: string;
-      picture: string;
-      role: Role;
-      created_at: string;
-      token: string;
-      event: Event[];
-    }
-  ): Promise<User> {
-    return this.usersService.create(userData);
-  }
+  // @Post()
+  // async createUser(
+  //   @Body()
+  //   userData: {
+  //     email: string;
+  //     name: string;
+  //     picture: string;
+  //     role: Role;
+  //     created_at: string;
+  //     token: string;
+  //     event: Event[];
+  //   }
+  // ): Promise<User> {
+  //   return this.usersService.create(userData);
+  // }
 
   @Get()
   async findUsers(): Promise<User[]> {
