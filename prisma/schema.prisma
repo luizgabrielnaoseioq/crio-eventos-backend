@@ -50,7 +50,7 @@ model Event {
   event_url     String
   social_links  String
   status        Status
-  created_at    DateTime
+  created_at    DateTime?
 
   created_by    User?   @relation(fields: [userId], references: [id])
   userId Int?
