@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsDateString,
-  IsEnum,
-  IsOptional,
-  IsInt,
-} from "class-validator";
+import { IsString, IsDateString, IsEnum, IsOptional } from "class-validator";
 import { Status } from "generated/prisma";
 
 export class CreateEventDto {
@@ -40,6 +34,5 @@ export class CreateEventDto {
 
   // Opcional se quiser permitir eventos sem criador por enquanto.
   @IsOptional()
-  @IsInt()
-  userId?: number;
+  userId?: string;
 }

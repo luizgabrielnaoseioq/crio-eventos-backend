@@ -33,16 +33,16 @@ export class EventsController {
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.service.findOne(+id);
+    return this.service.findOne(id);
   }
 
   @Patch(":id")
   update(@Param("id") id: string, updateEvent: UpdateEventDto) {
-    return this.service.update(+id, updateEvent);
+    return this.service.update(id, updateEvent);
   }
 
   @Delete(":id")
   delete(@Param("id") id: string) {
-    return this.service.remove(+id);
+    return this.service.remove(id);
   }
 }

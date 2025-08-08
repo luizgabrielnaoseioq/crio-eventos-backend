@@ -32,7 +32,7 @@ export class EventsService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.event.findUnique({
       where: {
         id,
@@ -41,7 +41,7 @@ export class EventsService {
     });
   }
 
-  update(id: number, data: UpdateEventDto) {
+  update(id: string, data: UpdateEventDto) {
     return this.prisma.event.update({
       where: { id },
       data,
@@ -49,7 +49,7 @@ export class EventsService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.event.delete({
       where: { id },
     });
