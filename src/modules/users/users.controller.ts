@@ -7,28 +7,27 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { Event, Role, User } from "generated/prisma";
+import { User } from "generated/prisma";
+import { UsersDTO } from "./dto/users.dto";
 
 @Controller("/users")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
+  constructor(private readonly usersService: UsersService) { }
   @Post()
   async createUser(
     @Body()
-    userData: {
-      email: string;
-      name: string;
-      picture: string;
-      role: Role;
-      created_at: string;
-      token: string;
-      event: Event[];
+    body: UsersDTO
+  ) {
+    const { token } = body
+    try {
+      const user = this.usersService.create({ token })
+      return user
+    } catch (error) {
+      console.error(error);
     }
-  ): Promise<User> {
-    return this.usersService.create(userData);
   }
 
   @Get()
