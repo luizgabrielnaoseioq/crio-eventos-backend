@@ -61,15 +61,15 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async updateUser(id: number, data: Prisma.UserUpdateInput): Promise<User> {
+  async updateUser(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     return this.prisma.user.update({ where: { id }, data });
   }
 
-  async deleteUser(id: number): Promise<User> {
+  async deleteUser(id: string): Promise<User> {
     return this.prisma.user.delete({ where: { id } });
   }
 }
