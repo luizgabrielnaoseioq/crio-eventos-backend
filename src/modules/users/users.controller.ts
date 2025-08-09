@@ -37,16 +37,16 @@ export class UsersController {
 
   @Get(":id")
   async findUserById(@Param("id") id: string): Promise<User | null> {
-    return this.usersService.findOne(Number(id));
+    return this.usersService.findOne(id);
   }
 
   // @Put(':id')
   // async updateUser(@Param('id') id: string, @Body() userData: { name?: string }): Promise<User> {
-  //   return this.usersService.updateUser(Number(id), userData);
+  //   return this.usersService.updateUser(String(id), userData);
   // }
 
   @Delete(":id")
   async deleteUser(@Param("id") id: string): Promise<User> {
-    return this.usersService.deleteUser(Number(id));
+    return this.usersService.deleteUser(String(id));
   }
 }
