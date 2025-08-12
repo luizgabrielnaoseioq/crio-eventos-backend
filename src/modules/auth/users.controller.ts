@@ -22,8 +22,10 @@ export class UsersController {
     body: UsersDTO
   ) {
     const { token } = body
+    console.log(body);
+    
     try {
-      const user = this.usersService.create({ token })
+      const user = await this.usersService.create({ token })
       return user
     } catch (error) {
       console.error(error);

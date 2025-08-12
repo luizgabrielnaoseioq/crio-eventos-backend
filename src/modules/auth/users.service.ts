@@ -39,7 +39,7 @@ export class UsersService {
         }
       })
     }
-    const authentication = this.jwt.sign(
+    const accessToken = this.jwt.sign(
       {
         sub: user.id,
         role: user.role,
@@ -52,7 +52,7 @@ export class UsersService {
     )
     return {
       user,
-      authentication
+      accessToken
     }
   }
 

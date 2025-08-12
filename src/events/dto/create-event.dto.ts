@@ -32,7 +32,6 @@ export class CreateEventDto {
   @IsDateString()
   created_at: string;
 
-  // Opcional se quiser permitir eventos sem criador por enquanto.
   @IsOptional()
   userId?: string;
 }
