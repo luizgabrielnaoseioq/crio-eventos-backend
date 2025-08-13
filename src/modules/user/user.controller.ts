@@ -15,7 +15,10 @@ import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
 import { UserService } from "./user.service";
 import { ApiTags } from "@nestjs/swagger";
 import { ZodValidationPipe } from "src/common/pipes/zod-validation.pipe";
-import { createUserSchema } from "../events/schemas/create-user-schema";
+import {
+  createUserSchema,
+  updateUserSchema,
+} from "./schemas/create-and-update-user-schema";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { updateUserDto } from "./dto/update-user.dto";
 
@@ -33,6 +36,7 @@ export class UserController {
   @Post("/create")
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
+  // Isso vai forçar a ter um nome, email e googleId, se nao tiver ele loga o erro.
   @UsePipes(new ZodValidationPipe(createUserSchema))
   async createUser(@Body() data: CreateUserDto) {
     try {
@@ -54,6 +58,8 @@ export class UserController {
 
   @Patch(":id")
   @UseGuards(JwtAuthGuard)
+  // Para atualizar ele tem que mandar os mesmos dados do create: name, email e googleId
+  @UsePipes(new ZodValidationPipe(updateUserSchema))
   async update(@Body() data: updateUserDto, @Param("id") userId: string) {
     try {
       return await this.userService.update(userId, data);
