@@ -23,8 +23,9 @@ import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
 export class EventsController {
   constructor(private service: EventsService) {}
 
-  @Post(":id")
+  @Post()
   @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ZodValidationPipe(createEventSchema))
   async create(@Body() createEvent: CreateEventDto) {
     try {
@@ -35,6 +36,7 @@ export class EventsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     try {
       return await this.service.findAll();
@@ -44,6 +46,7 @@ export class EventsController {
   }
 
   @Get(":id")
+  @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") id: string) {
     try {
       return await this.service.findOne(id);
@@ -53,7 +56,8 @@ export class EventsController {
   }
 
   @Patch(":id")
-  async update(@Param("id") id: string, updateEvent: UpdateEventDto) {
+  @UseGuards(JwtAuthGuard)
+  async update(@Param("id") id: string, @Body() updateEvent: UpdateEventDto) {
     try {
       return await this.service.update(id, updateEvent);
     } catch (error) {
@@ -62,6 +66,7 @@ export class EventsController {
   }
 
   @Delete(":id")
+  @UseGuards(JwtAuthGuard)
   async delete(@Param("id") id: string) {
     try {
       return await this.service.remove(id);
