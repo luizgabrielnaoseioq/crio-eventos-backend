@@ -1,17 +1,14 @@
-import { Body, Controller, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { Controller, Get, Post, Body } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { UsersDTO } from "./dto/users.dto";
+import { AuthDTO } from "./dto/auth.dto";
 
-@ApiTags("Auth")
 @Controller("/auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
   @Post()
   async createUser(
     @Body()
-    body: UsersDTO
+    body: AuthDTO
   ) {
     const { token } = body;
     console.log(body);
