@@ -54,12 +54,4 @@ export class EventsService {
       where: { id },
     });
   }
-
-  async approval() {
-    return await this.prisma.event.findUnique({
-      where: {
-        status: "APPROVED",
-      },
-    });
-  }
 }

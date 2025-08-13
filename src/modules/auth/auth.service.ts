@@ -1,12 +1,11 @@
-import { PrismaService } from "src/modules/prisma/prisma.service";
-import { Injectable, UnauthorizedException, UnprocessableEntityException } from "@nestjs/common";
-import { Prisma, User } from "generated/prisma";
-import { OAuth2Client } from "google-auth-library";
-import { UsersDTO } from "./dto/users.dto";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { OAuth2Client } from "google-auth-library";
+import { PrismaService } from "src/modules/prisma/prisma.service";
+import { UsersDTO } from "./dto/users.dto";
 
 @Injectable()
-export class UsersService {
+export class AuthService {
   private client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
   constructor(
     private jwt: JwtService,
@@ -56,20 +55,4 @@ export class UsersService {
     }
   }
 
-
-  async findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
-  async findOne(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
-  }
-
-  async updateUser(id: string, data: Prisma.UserUpdateInput): Promise<User> {
-    return this.prisma.user.update({ where: { id }, data });
-  }
-
-  async deleteUser(id: string): Promise<User> {
-    return this.prisma.user.delete({ where: { id } });
-  }
 }

@@ -1,11 +1,13 @@
-import { z } from "zod"
+import { ApiProperty } from "@nestjs/swagger";
+import { z } from "zod";
 
 const usersSchema = z.object({
-    token: z.string().min(1, "token not found")
-})
+  token: z.string().min(1, "token not found"),
+});
 
-type UsersSchemaType = z.infer<typeof usersSchema>
+type UsersSchemaType = z.infer<typeof usersSchema>;
 
 export class UsersDTO implements UsersSchemaType {
-    token: string
+  @ApiProperty()
+  token: string;
 }

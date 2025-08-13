@@ -14,7 +14,9 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { ZodValidationPipe } from "src/common/pipes/zod-validation.pipe";
 import { createEventSchema } from "./schemas/create-event-schema";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Events')
 @Controller("/events")
 export class EventsController {
   constructor(private service: EventsService) {}
