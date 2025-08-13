@@ -7,8 +7,8 @@ import { PrismaService } from "src/modules/prisma/prisma.service";
 export class EventsService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: CreateEventDto) {
-    return this.prisma.event.create({
+  async create(data: CreateEventDto) {
+    return await this.prisma.event.create({
       data: {
         title: data.title,
         description: data.description,
@@ -26,14 +26,14 @@ export class EventsService {
     });
   }
 
-  findAll() {
-    return this.prisma.event.findMany({
+  async findAll() {
+    return await this.prisma.event.findMany({
       include: { created_by: true },
     });
   }
 
-  findOne(id: string) {
-    return this.prisma.event.findUnique({
+  async findOne(id: string) {
+    return await this.prisma.event.findUnique({
       where: {
         id,
       },
@@ -41,17 +41,25 @@ export class EventsService {
     });
   }
 
-  update(id: string, data: UpdateEventDto) {
-    return this.prisma.event.update({
+  async update(id: string, data: UpdateEventDto) {
+    return await this.prisma.event.update({
       where: { id },
       data,
       include: { created_by: true },
     });
   }
 
-  remove(id: string) {
-    return this.prisma.event.delete({
+  async remove(id: string) {
+    return await this.prisma.event.delete({
       where: { id },
+    });
+  }
+
+  async approval() {
+    return await this.prisma.event.findUnique({
+      where: {
+        status: "APPROVED",
+      },
     });
   }
 }

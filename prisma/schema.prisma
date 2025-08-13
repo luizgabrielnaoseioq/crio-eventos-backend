@@ -52,8 +52,8 @@ model Event {
   status        Status
   created_at    DateTime?
 
+  userId        String?
   created_by    User?   @relation(fields: [userId], references: [id])
-  userId String?
 
 
   @@map("Events")

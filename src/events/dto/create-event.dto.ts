@@ -33,5 +33,5 @@ export class CreateEventDto {
   created_at: string;
 
   @IsOptional()
-  userId?: string;
+  userId: string;
 }
