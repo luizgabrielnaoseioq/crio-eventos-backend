@@ -17,12 +17,4 @@ export class CreateUserDto {
   @ApiProperty()
   @IsEnum(Role)
   role: Role;
-
-  @ApiProperty()
-  @IsString()
-  created_at: string;
-
-  @ApiProperty()
-  @IsString()
-  googleId: string;
 }

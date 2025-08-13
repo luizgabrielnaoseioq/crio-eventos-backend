@@ -33,19 +33,6 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Post("/create")
-  @HttpCode(201)
-  @UseGuards(JwtAuthGuard)
-  // Isso vai forçar a ter um nome, email e googleId, se nao tiver ele loga o erro.
-  @UsePipes(new ZodValidationPipe(createUserSchema))
-  async createUser(@Body() data: CreateUserDto) {
-    try {
-      return await this.userService.create(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   @Get("/:id")
   @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") userId: string) {
