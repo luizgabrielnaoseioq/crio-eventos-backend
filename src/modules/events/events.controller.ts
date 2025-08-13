@@ -25,18 +25,18 @@ export class EventsController {
 
   @Post()
   @HttpCode(201)
-  @UseGuards(JwtAuthGuard)
   @UsePipes(new ZodValidationPipe(createEventSchema))
-  async create(@Body() createEvent: CreateEventDto) {
+  @UseGuards(JwtAuthGuard)
+  async create(@Request() req, @Body() createEvent: CreateEventDto) {
+    const userCreationId = req.user.sub;
     try {
-      return await this.service.create(createEvent);
+      return await this.service.create(createEvent, userCreationId);
     } catch (error) {
       console.log(error);
     }
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll() {
     try {
       return await this.service.findAll();

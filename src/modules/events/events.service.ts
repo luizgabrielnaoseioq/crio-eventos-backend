@@ -2,33 +2,32 @@ import { Injectable } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { PrismaService } from "src/modules/prisma/prisma.service";
+import { date } from "zod";
+import { Event } from "@prisma/client";
 
 @Injectable()
 export class EventsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateEventDto) {
-    return await this.prisma.event.create({
+  async create(data: CreateEventDto, userCreationId: string) {
+    await this.prisma.event.create({
       data: {
-        title: data.title,
         description: data.description,
-        start_date: data.start_date,
         end_date: data.end_date,
-        location: data.location,
-        image_url: data.image_url,
         event_url: data.event_url,
+        image_url: data.image_url,
+        location: data.location,
         social_links: data.social_links,
-        status: data.status,
-        created_by: { connect: { id: data.userId } },
-        created_at: data.created_at,
+        start_date: data.start_date,
+        title: data.title,
+        userCreationId,
       },
-      include: { created_by: true },
     });
   }
 
   async findAll() {
     return await this.prisma.event.findMany({
-      include: { created_by: true },
+      include: { EventUser: true },
     });
   }
 
@@ -37,7 +36,7 @@ export class EventsService {
       where: {
         id,
       },
-      include: { created_by: true },
+      include: { EventUser: true },
     });
   }
 
@@ -45,7 +44,7 @@ export class EventsService {
     return await this.prisma.event.update({
       where: { id },
       data,
-      include: { created_by: true },
+      include: { EventUser: true },
     });
   }
 

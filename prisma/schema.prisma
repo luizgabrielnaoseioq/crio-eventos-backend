@@ -27,26 +27,33 @@ model User {
   created_at DateTime @default(now())
   googleId   String   @unique
 
-  event Event[]
+  EventUser EventUser[]
 
   @@map("users")
 }
 
 model Event {
-  id           String    @id @default(uuid())
-  title        String    @unique
-  description  String
-  start_date   DateTime
-  end_date     DateTime
-  location     String
-  image_url    String
-  event_url    String
-  social_links String
-  status       Status
-  created_at   DateTime?
-
-  userId     String?
-  created_by User?   @relation(fields: [userId], references: [id])
+  id             String      @id @default(uuid())
+  title          String      @unique
+  description    String
+  start_date     DateTime
+  end_date       DateTime
+  location       String
+  image_url      String
+  event_url      String
+  social_links   String
+  status         Status      @default(PENDING)
+  created_at     DateTime    @default(now())
+  userCreationId String
+  EventUser      EventUser[]
 
   @@map("Events")
+}
+
+model EventUser {
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+  user    User   @relation(fields: [userId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id])
 }
