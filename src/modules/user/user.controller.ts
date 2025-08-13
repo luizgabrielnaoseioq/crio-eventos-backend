@@ -16,10 +16,8 @@ import { UserService } from "./user.service";
 import { ApiTags } from "@nestjs/swagger";
 import { ZodValidationPipe } from "src/common/pipes/zod-validation.pipe";
 import { createUserSchema } from "../events/schemas/create-user-schema";
-import { CreateEventDto } from "../events/dto/create-event.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { updateUserDto } from "./dto/update-user.dto";
-import da from "zod/v4/locales/da.js";
 
 @ApiTags("User")
 @Controller("/user")
