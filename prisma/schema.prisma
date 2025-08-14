@@ -39,7 +39,7 @@ model Event {
   start_date     DateTime
   end_date       DateTime
   location       String
-  image_url      String
+  image_url      String?
   event_url      String
   social_links   String
   status         Status      @default(PENDING)
