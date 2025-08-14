@@ -62,4 +62,13 @@ export class EventsService {
       },
     });
   }
+
+  async rejectedEvent(eventId: string, userId: string) {
+    return await this.prisma.event.update({
+      where: { id: eventId },
+      data: {
+        status: "REJECTED",
+      },
+    });
+  }
 }

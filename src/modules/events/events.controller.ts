@@ -75,7 +75,7 @@ export class EventsController {
     }
   }
 
-  @Put("/:eventId")
+  @Put("/approve/:eventId")
   @UseGuards(JwtAuthGuard)
   async approveEvent(@Request() req, @Param("eventId") eventId: string) {
     const userId = req.user.sub;
@@ -85,5 +85,14 @@ export class EventsController {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  @Put("/reprove/:eventId")
+  @UseGuards(JwtAuthGuard)
+  async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
+    const userId = req.user.sub;
+    try {
+      return await this.service.rejectedEvent(eventId, userId);
+    } catch (error) {}
   }
 }
