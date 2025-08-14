@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsDateString } from "class-validator";
+import { IsString, IsDateString, IsOptional } from "class-validator";
 
 export class CreateEventDto {
   @ApiProperty()
@@ -22,9 +22,10 @@ export class CreateEventDto {
   @IsString()
   location: string;
 
-  @ApiProperty()
-  @IsString()
-  image_url: string;
+  // @ApiProperty()
+  // @IsString()
+  // @IsOptional()
+  // image_url: string;
 
   @ApiProperty()
   @IsString()
