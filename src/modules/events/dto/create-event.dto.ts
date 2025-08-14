@@ -22,10 +22,10 @@ export class CreateEventDto {
   @IsString()
   location: string;
 
-  // @ApiProperty()
-  // @IsString()
-  // @IsOptional()
-  // image_url: string;
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  image_url: string;
 
   @ApiProperty()
   @IsString()

@@ -12,6 +12,15 @@ enum Role {
   ADMIN
 }
 
+enum Categories {
+  SHOW
+  WORKSHOP
+  GASTRONOMY
+  SEMINAR
+  NETWORk
+  SPORT
+}
+
 enum Status {
   PENDING
   APPROVED
@@ -42,6 +51,7 @@ model Event {
   image_url      String?
   event_url      String
   social_links   String
+  categorie      Categories? @default(SHOW)
   status         Status      @default(PENDING)
   created_at     DateTime    @default(now())
   userCreationId String
