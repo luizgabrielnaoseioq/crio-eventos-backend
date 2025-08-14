@@ -13,7 +13,7 @@ import {
 import { User } from "@prisma/client";
 import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
 import { UserService } from "./user.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { ZodValidationPipe } from "src/common/pipes/zod-validation.pipe";
 import {
   createUserSchema,
@@ -28,12 +28,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findUsers(): Promise<User[]> {
+    console.log("oi");
+
     return await this.userService.findAll();
   }
 
   @Get("/:id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") userId: string) {
     try {
@@ -44,6 +48,7 @@ export class UserController {
   }
 
   @Patch(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   // Para atualizar ele tem que mandar os mesmos dados do create: name, email e googleId
   @UsePipes(new ZodValidationPipe(updateUserSchema))
@@ -56,6 +61,7 @@ export class UserController {
   }
 
   @Delete(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async delete(@Param("id") userId: string) {
     try {
@@ -66,6 +72,7 @@ export class UserController {
   }
 
   @Patch(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async changeUserRole(@Param("id") userId: string) {
     return await this.userService.changeUserRole(userId);

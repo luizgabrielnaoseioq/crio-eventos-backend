@@ -9,25 +9,38 @@ import {
   Post,
   Put,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
 import { EventsService } from "./events.service";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
+import { ApiBearerAuth } from "@nestjs/swagger";
+import { CreateEventDto } from "./dto/create-event.dto";
+import { jwtDecode } from "jwt-decode";
 
 @Controller("/events")
 export class EventsController {
   constructor(private service: EventsService) {}
 
   @Post()
+  @ApiBearerAuth()
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  async create(@Request() req, @Body() createEvent: any) {
-    const userCreationId = req.sub;
+  async create(@Request() req, @Body() createEvent: CreateEventDto) {
+    const authorizationHeader = req.headers["authorization"];
+    const token = authorizationHeader.replace("Bearer ", "");
 
-    console.log(req);
+    const tokenDecode = jwtDecode(token);
+
+    const userCreateId = tokenDecode.sub;
+
+    if (!userCreateId) throw new UnauthorizedException();
+
+    console.log("teste decodifica token", userCreateId);
+
     try {
-      const response = await this.service.create(createEvent, userCreationId);
+      const response = await this.service.create(createEvent, userCreateId);
       return response;
     } catch (error) {
       console.log(error);
@@ -35,6 +48,9 @@ export class EventsController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     try {
       return await this.service.findAll();
@@ -44,6 +60,7 @@ export class EventsController {
   }
 
   @Get(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") id: string) {
     try {
@@ -54,6 +71,7 @@ export class EventsController {
   }
 
   @Patch(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async update(@Param("id") id: string, @Body() updateEvent: UpdateEventDto) {
     try {
@@ -64,6 +82,7 @@ export class EventsController {
   }
 
   @Delete(":id")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async delete(@Param("id") id: string) {
     try {
@@ -74,6 +93,7 @@ export class EventsController {
   }
 
   @Put("/approve/:eventId")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async approveEvent(@Request() req, @Param("eventId") eventId: string) {
     const userId = req.user.sub;
@@ -86,6 +106,7 @@ export class EventsController {
   }
 
   @Put("/reprove/:eventId")
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
     const userId = req.user.sub;
