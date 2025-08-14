@@ -2,9 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { PrismaService } from "src/modules/prisma/prisma.service";
-import { date } from "zod";
-import { Event } from "@prisma/client";
-
 @Injectable()
 export class EventsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,7 +12,7 @@ export class EventsService {
         description: data.description,
         end_date: data.end_date,
         event_url: data.event_url,
-        image_url: data.image_url,
+        // image_url: data.image_url,
         location: data.location,
         social_links: data.social_links,
         start_date: data.start_date,
