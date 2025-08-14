@@ -10,13 +10,9 @@ import {
   Put,
   Request,
   UseGuards,
-  UsePipes,
 } from "@nestjs/common";
 import { EventsService } from "./events.service";
-import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
-import { ZodValidationPipe } from "src/common/pipes/zod-validation.pipe";
-import { createEventSchema } from "./schemas/create-event-schema";
 import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
 
 @Controller("/events")
@@ -26,13 +22,9 @@ export class EventsController {
   @Post()
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  async create(
-    @Request() req,
-    @Body() createEvent: any
-  ) {
-    
+  async create(@Request() req, @Body() createEvent: any) {
     const userCreationId = req.sub;
-    
+
     console.log(req);
     try {
       const response = await this.service.create(createEvent, userCreationId);
