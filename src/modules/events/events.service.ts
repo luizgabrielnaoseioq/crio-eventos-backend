@@ -3,6 +3,7 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { Injectable } from "@nestjs/common";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { enumCity } from "@prisma/client";
+import { includes } from "zod";
 
 @Injectable()
 export class EventsService {
@@ -36,8 +37,11 @@ export class EventsService {
     });
   }
 
-  async findAll() {
-    return await this.prisma.event.findMany();
+  async findAll(city?: enumCity) {
+    return await this.prisma.event.findMany({
+      where: city ? { address: { city } } : {},
+      include: { address: true },
+    });
   }
 
   async findOne(id: string) {
@@ -89,13 +93,6 @@ export class EventsService {
       data: {
         status: "REJECTED",
       },
-    });
-  }
-
-  async findByCity(city?: enumCity) {
-    return await this.prisma.event.findMany({
-      where: city ? { address: { city } } : {},
-      include: { address: true },
     });
   }
 }

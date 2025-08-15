@@ -17,7 +17,7 @@ import {
 import { EventsService } from "./events.service";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { jwtDecode } from "jwt-decode";
 import { string } from "zod";
@@ -51,12 +51,13 @@ export class EventsController {
   }
 
   @Get()
+  @ApiQuery({ name: "city", enum: enumCity, required: false })
   @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async findAll() {
+  async findAll(@Query("city") city?: enumCity) {
     try {
-      return await this.service.findAll();
+      return await this.service.findAll(city);
     } catch (error) {
       console.log(error);
     }
@@ -118,12 +119,5 @@ export class EventsController {
     try {
       return await this.service.rejectedEvent(eventId, userId);
     } catch (error) {}
-  }
-
-  @Get("/city")
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  async findByCity(@Query("city") city?: enumCity) {
-    return this.service.findByCity(city);
   }
 }
