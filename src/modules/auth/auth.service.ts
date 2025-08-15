@@ -49,6 +49,8 @@ export class AuthService {
         secret: process.env.JWT_SECRET,
       }
     );
+    console.log("accessToken", accessToken);
+
     return {
       user,
       accessToken,

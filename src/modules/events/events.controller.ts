@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -15,17 +16,19 @@ import {
 import { EventsService } from "./events.service";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { JwtAuthGuard } from "src/common/decorator/guard/jwt-auth.guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { jwtDecode } from "jwt-decode";
+import { string } from "zod";
 
+@ApiTags("events")
 @Controller("/events")
 export class EventsController {
   constructor(private service: EventsService) {}
 
   @Post()
-  @ApiBearerAuth()
   @HttpCode(201)
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async create(@Request() req, @Body() createEvent: CreateEventDto) {
     const authorizationHeader = req.headers["authorization"];
@@ -37,8 +40,6 @@ export class EventsController {
 
     if (!userCreateId) throw new UnauthorizedException();
 
-    console.log("teste decodifica token", userCreateId);
-
     try {
       const response = await this.service.create(createEvent, userCreateId);
       return response;
@@ -49,7 +50,7 @@ export class EventsController {
 
   @Get()
   @ApiBearerAuth()
-  @HttpCode(201)
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   async findAll() {
     try {
@@ -59,7 +60,7 @@ export class EventsController {
     }
   }
 
-  @Get(":id")
+  @Get("/getOne/:id")
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findOne(@Param("id") id: string) {
@@ -70,18 +71,20 @@ export class EventsController {
     }
   }
 
-  @Patch(":id")
+  @HttpCode(200)
+  @Patch("/update/:id")
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async update(@Param("id") id: string, @Body() updateEvent: UpdateEventDto) {
+  async update(@Param("id") eventId: string, @Body() body: UpdateEventDto) {
     try {
-      return await this.service.update(id, updateEvent);
+      return await this.service.update(eventId, body);
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error.format());
     }
   }
 
   @Delete(":id")
+  @HttpCode(200)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async delete(@Param("id") id: string) {
@@ -105,13 +108,13 @@ export class EventsController {
     }
   }
 
-  @Put("/reprove/:eventId")
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
-    const userId = req.user.sub;
-    try {
-      return await this.service.rejectedEvent(eventId, userId);
-    } catch (error) {}
-  }
+  // @Put("/reprove/:eventId")
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
+  //   const userId = req.user.sub;
+  //   try {
+  //     return await this.service.rejectedEvent(eventId, userId);
+  //   } catch (error) {}
+  // }
 }

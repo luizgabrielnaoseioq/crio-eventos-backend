@@ -12,8 +12,6 @@ export class AuthController {
   ) {
     const { token } = body;
 
-    console.log(body);
-
     try {
       const user = await this.authService.create({ token });
       return user;

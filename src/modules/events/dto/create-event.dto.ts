@@ -1,5 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsDateString, IsOptional } from "class-validator";
+import {
+  IsString,
+  IsDateString,
+  IsOptional,
+  ValidateNested,
+  IsEnum,
+  IsUUID,
+} from "class-validator";
+import { CreateAddressDto } from "./create-address.dto";
+import { Type } from "class-transformer";
+import { Categories } from "@prisma/client";
 
 export class CreateEventDto {
   @ApiProperty()
@@ -34,4 +44,17 @@ export class CreateEventDto {
   @ApiProperty()
   @IsString()
   social_links: string;
+
+  @ApiProperty({ type: CreateAddressDto })
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address: CreateAddressDto;
+
+  @ApiProperty({
+    required: false,
+    enum: Categories,
+  })
+  @IsEnum(Categories)
+  @IsOptional() // Por enquanto deixar opcional.
+  categorie: Categories;
 }

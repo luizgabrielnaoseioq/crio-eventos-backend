@@ -47,7 +47,6 @@ model Event {
   description    String
   start_date     DateTime
   end_date       DateTime
-  location       String
   image_url      String?
   event_url      String
   social_links   String
@@ -56,6 +55,9 @@ model Event {
   created_at     DateTime    @default(now())
   userCreationId String
   EventUser      EventUser[]
+
+  addressId String
+  address   Address @relation(fields: [addressId], references: [id])
 
   @@map("Events")
 }
@@ -66,4 +68,16 @@ model EventUser {
   eventId String
   user    User   @relation(fields: [userId], references: [id])
   event   Event  @relation(fields: [eventId], references: [id])
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  street     String
+  number     String?
+  city       String
+  state      String
+  cep        String
+  complement String?
+
+  Event Event[]
 }

@@ -1,3 +1,4 @@
+import { Categories } from "@prisma/client";
 import z from "zod";
 
 export const createEventSchema = z.object({
@@ -13,7 +14,7 @@ export const createEventSchema = z.object({
   image_url: z.string().url("URL inválida").nullish(),
   event_url: z.string().url("URL inválida").nullish(),
   social_links: z.array(z.string().url("URL inválida")).nullish(),
+  categories: z.enum(Categories),
 });
 
-export type CreateEventDto = z.infer<typeof createEventSchema>;
 export const updateEventSchema = createEventSchema.partial();
