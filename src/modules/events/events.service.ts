@@ -11,10 +11,9 @@ export class EventsService {
     const address = await this.prisma.address.create({
       data: {
         city: data.address.city,
-        cep: data.address.cep,
-        state: data.address.state,
         street: data.address.street,
         complement: data.address.complement,
+        number: data.address.number,
       },
     });
 
@@ -27,10 +26,10 @@ export class EventsService {
         social_links: data.social_links,
         event_url: data.event_url,
         image_url: data.image_url,
-        addressId: address.id,
-        userCreationId,
         categorie: data.categorie,
         status: "PENDING",
+        userCreationId,
+        addressId: address.id,
       },
       include: { address: true, EventUser: true },
     });
@@ -60,10 +59,8 @@ export class EventsService {
         address: {
           update: {
             city: data.address?.city,
-            state: data.address?.state,
             street: data.address?.street,
             number: data.address?.number,
-            cep: data.address?.cep,
           },
         },
       },
@@ -91,6 +88,12 @@ export class EventsService {
       data: {
         status: "REJECTED",
       },
+    });
+  }
+
+  async findByCity(address) {
+    return await this.prisma.address.findMany({
+      where: {},
     });
   }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString } from "class-validator";
+import { enumCity } from "@prisma/client";
+import { IsEnum, IsOptional, IsString } from "class-validator";
 
 export class CreateAddressDto {
   @ApiProperty({ required: false })
@@ -15,15 +16,7 @@ export class CreateAddressDto {
   @IsOptional()
   number?;
 
-  @ApiProperty()
-  @IsString()
+  @ApiProperty({ enum: enumCity })
+  @IsEnum(enumCity)
   city;
-
-  @ApiProperty()
-  @IsString()
-  state;
-
-  @ApiProperty()
-  @IsString()
-  cep;
 }

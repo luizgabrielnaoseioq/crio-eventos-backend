@@ -71,13 +71,16 @@ model EventUser {
 }
 
 model Address {
-  id         String  @id @default(uuid())
+  id         String    @id @default(uuid())
   street     String
-  number     String?
-  city       String
-  state      String
-  cep        String
+  number     String
+  city       enumCity? @default(CRICIUMA)
   complement String?
 
   Event Event[]
+}
+
+enum enumCity {
+  CRICIUMA
+  TUBARAO
 }
