@@ -2,6 +2,7 @@ import { PrismaService } from "src/modules/prisma/prisma.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { Injectable } from "@nestjs/common";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { enumCity } from "@prisma/client";
 
 @Injectable()
 export class EventsService {
@@ -91,9 +92,10 @@ export class EventsService {
     });
   }
 
-  async findByCity(address) {
-    return await this.prisma.address.findMany({
-      where: {},
+  async findByCity(city?: enumCity) {
+    return await this.prisma.event.findMany({
+      where: city ? { address: { city } } : {},
+      include: { address: true },
     });
   }
 }

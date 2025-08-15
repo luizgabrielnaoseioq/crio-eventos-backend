@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   Request,
   UnauthorizedException,
   UseGuards,
@@ -20,6 +21,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { jwtDecode } from "jwt-decode";
 import { string } from "zod";
+import { enumCity } from "@prisma/client";
 
 @ApiTags("events")
 @Controller("/events")
@@ -108,13 +110,20 @@ export class EventsController {
     }
   }
 
-  // @Put("/reprove/:eventId")
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  // async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
-  //   const userId = req.user.sub;
-  //   try {
-  //     return await this.service.rejectedEvent(eventId, userId);
-  //   } catch (error) {}
-  // }
+  @Put("/reprove/:eventId")
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  async reproveEvent(@Request() req, @Param("eventId") eventId: string) {
+    const userId = req.user.sub;
+    try {
+      return await this.service.rejectedEvent(eventId, userId);
+    } catch (error) {}
+  }
+
+  @Get("/city")
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  async findByCity(@Query("city") city?: enumCity) {
+    return this.service.findByCity(city);
+  }
 }
