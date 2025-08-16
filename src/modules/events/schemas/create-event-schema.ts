@@ -11,10 +11,16 @@ export const createEventSchema = z.object({
     error: "Data de término obrigatória",
   }),
   location: z.string().min(3, "Local inválido"),
-  image_url: z.string().url("URL inválida").nullish(),
-  event_url: z.string().url("URL inválida").nullish(),
-  social_links: z.array(z.string().url("URL inválida")).nullish(),
-  categories: z.enum(Categories),
+  image_url: z.url("URL inválida").nullish(),
+  event_url: z.url("URL inválida").nullish(),
+  social_links: z.url("URL inválida"),
+  categorie: z.enum(Categories),
+  address: z.object({
+    city: z.string().min(2, "Cidade inválida"),
+    street: z.string().min(3, "Rua inválida"),
+    number: z.string(),
+    complement: z.string().nullish(),
+  }),
 });
 
 export const updateEventSchema = createEventSchema.partial();

@@ -1,9 +1,8 @@
+import { Injectable } from "@nestjs/common";
+import { enumCity, Status } from "@prisma/client";
 import { PrismaService } from "src/modules/prisma/prisma.service";
 import { CreateEventDto } from "./dto/create-event.dto";
-import { Injectable } from "@nestjs/common";
 import { UpdateEventDto } from "./dto/update-event.dto";
-import { enumCity } from "@prisma/client";
-import { includes } from "zod";
 
 @Injectable()
 export class EventsService {
@@ -38,10 +37,22 @@ export class EventsService {
   }
 
   async findAll(city?: enumCity) {
-    return await this.prisma.event.findMany({
+    const eventWithAddress = await this.prisma.event.findMany({
       where: city ? { address: { city } } : {},
-      include: { address: true },
+      include: { address: true, EventUser: true },
     });
+
+    const format = eventWithAddress.map((event) => ({
+      id: event.id,
+      title: event.title,
+      image_url: event.image_url,
+      description: event.description,
+      start_date: event.start_date.toISOString(),
+      end_date: event.end_date.toISOString(),
+      address: event.address,
+    }));
+
+    return format;
   }
 
   async findOne(id: string) {
@@ -75,6 +86,21 @@ export class EventsService {
   async remove(id: string) {
     return await this.prisma.event.delete({
       where: { id },
+    });
+  }
+
+  async switchStatus(id: string, status: Status) {
+    const event = await this.prisma.event.findUnique({
+      where: { id },
+    });
+
+    if (!event) {
+      throw new Error("Evento não encontrado!");
+    }
+
+    return await this.prisma.event.update({
+      where: { id },
+      data: { status },
     });
   }
 
